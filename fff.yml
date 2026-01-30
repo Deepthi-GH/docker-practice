@@ -1,0 +1,79 @@
+name: catalogue-ci-pipeline
+on: [push]
+permissions:
+  content: read
+  statuses: write
+jobs:
+  new-feature-pipeline:
+    if: github.ref != 'refs/heads/main'
+    uses: 'deepth-ka/workflows/.github/actions/feature-nodejs-pipeline.yml@main'
+    with:
+      project: roboshop
+      component: catalogue
+      environment: dev
+    secrets: inherit
+
+  dev-pipeline:
+    if: github.ref == 'refs/head/main'
+    uses: 'deepthi-ka/workflows/.github/actions/dev-nodejs.pipeline.yml@main'
+    with:
+      project: roboshop
+      component: catalogue 
+      environment: dev
+    secrets: inherit  
+
+
+==============================
+
+name: feature-pipeline
+on: 
+  workflow_call:
+    inputs:
+      project:
+       required: true
+       type: string
+      component:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+
+jobs:
+  fetaure-pipeline:
+    runs-on: self-hosted
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v6
+
+      - name:  install dependencies
+        run: npm install 
+
+      - name: run unit tests
+        run : echo "run unit tests"
+
+      - name: authenticate to aws
+        uses: secrets.AWS_ACCESS_KEY_ID  
+
+      - name: build docker image
+        id: docker_build
+        run: |
+         docker build -t image_name .
+         docker images
+      
+      - name: docker image status
+        if: always()
+        uses: Deepthi-Ka/workflows/.github/actions/update-commit-status@main
+        with:
+          sha: ${{ github.sha }}
+          description: ${{ steps.docker_build.outcome }}
+          context: docker_build
+          state: ${{ steps.docker_build.outcome }}
+
+
+
+
+
+
+
+
