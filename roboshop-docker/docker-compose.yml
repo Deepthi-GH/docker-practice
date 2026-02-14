@@ -1,9 +1,10 @@
 services: #services is the main section where you define all the containers your application needs.
   mongodb:
     image: mongodb:v1
+    container_name: mongodb
 networks:
   default:
     driver: bridge
     name: roboshop
-    external: false
+    external: false #true if u have created network manually using docker network command.
 
