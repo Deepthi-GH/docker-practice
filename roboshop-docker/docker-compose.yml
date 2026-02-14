@@ -1,0 +1,9 @@
+services: #services is the main section where you define all the containers your application needs.
+  mongodb:
+    image: mongodb:v1
+networks:
+  default:
+    driver: bridge
+    name: roboshop
+    external: false
+
