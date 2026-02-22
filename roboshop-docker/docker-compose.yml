@@ -2,6 +2,8 @@ services: #services is the main section where you define all the containers your
   mongodb:
     image: mongodb:v1
     container_name: mongodb
+    volumes:
+    - mongodb:/data/db
   catalogue:
     image: catalogue:v1
     container_name: catalogue
@@ -10,6 +12,8 @@ services: #services is the main section where you define all the containers your
   redis:
     image: redis:7.0
     container_name: redis 
+    volumes:
+    - redis:/data
   user:
     image: user:v1
     container_name: user
@@ -25,6 +29,8 @@ services: #services is the main section where you define all the containers your
   mysql:
     image: mysql:v1
     container_name: mysql
+    volumes:
+    - mysql:/var/lib/mysql
 
   shipping:
     image: shipping:v1
@@ -38,6 +44,8 @@ services: #services is the main section where you define all the containers your
     environment:
       RABBITMQ_DEFAULT_USER: roboshop 
       RABBITMQ_DEFAULT_PASS: roboshop123
+    volumes: # This is equivalent to -v rabbitmq:/var/lib/rabbitmq
+    - rabbitmq:/var/lib/rabbitmq  
   payment:
     image: payment:v1
     container_name: payment  
@@ -61,4 +69,8 @@ networks:
     driver: bridge
     name: roboshop
     external: false #true if u have created network manually using docker network command.
-
+volumes:
+  mongodb: # This is equivalent to docker volume create mongodb
+  redis:
+  mysql:
+  rabbitmq: 
