@@ -1,39 +1,47 @@
 services: #services is the main section where you define all the containers your application needs.
   mongodb:
-    image: mongodb:v1
+    build: ./mongodb   #./folder → folder inside current directory
+    image: kattik/mongodb:v1
     container_name: mongodb
     volumes:
     - mongodb:/data/db
   catalogue:
-    image: catalogue:v1
+    build:
+      context: ./catalogue
+      dockerfile: Dockerfile
+    image: kattik/catalogue:v1
     container_name: catalogue
     depends_on: 
     - mongodb
   redis:
-    image: redis:7.0
+    image: kattik/redis:7.0
     container_name: redis 
     volumes:
     - redis:/data
   user:
-    image: user:v1
+    build: ./user
+    image: kattik/user:v1
     container_name: user
     depends_on:
     - redis
     - mongodb
   cart:
-    image: cart:v1
+    build: ./cart
+    image: kattik/cart:v1
     container_name: cart 
     depends_on:
     - redis
     - catalogue
   mysql:
-    image: mysql:v1
+    build: ./mysql
+    image: kattik/mysql:v1
     container_name: mysql
     volumes:
     - mysql:/var/lib/mysql
 
   shipping:
-    image: shipping:v1
+    build: ./shipping
+    image: kattik/shipping:v1
     container_name: shipping
     depends_on: 
     - mysql
@@ -47,14 +55,16 @@ services: #services is the main section where you define all the containers your
     volumes: # This is equivalent to -v rabbitmq:/var/lib/rabbitmq
     - rabbitmq:/var/lib/rabbitmq  
   payment:
-    image: payment:v1
+    build: ./payment
+    image: kattik/payment:v1
     container_name: payment  
     depends_on: 
     - rabbitmq
     - cart
     - user
   frontend:
-    image: frontend:v1
+    build: ./frontend
+    image: kattik/frontend:v1
     container_name: frontend
     ports:
     - "80:80"
