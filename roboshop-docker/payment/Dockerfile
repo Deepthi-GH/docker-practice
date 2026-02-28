@@ -18,7 +18,7 @@ ENV CART_HOST=cart \
 COPY --from=build /opt/server requirements.txt
 USER roboshop
 CMD [ "--ini", "payment.ini"]
-ENTRYPOINT ["uwsgi"]
+ENTRYPOINT ["pyuwsgi"]
 
 
 # FROM python:3.9
