@@ -1,6 +1,9 @@
 FROM python:3.9.25-alpine3.21 AS build
 WORKDIR /opt/server
-RUN apk add uwsgi
+RUN apk add --no-cache \
+    build-base \
+    linux-headers \
+    pcre-dev
 COPY payment.ini *.py requirements.txt  .
 RUN pip3 install -r requirements.txt
 
