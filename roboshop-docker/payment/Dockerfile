@@ -4,8 +4,8 @@ RUN apk add --no-cache \
     build-base \
     linux-headers \
     pcre-dev
-COPY payment.ini *.py requirements.txt  .
-RUN pip3 install -r requirements.txt
+COPY  requirements.txt  .
+RUN pip3 install --prefix=/install -r requirements.txt
 
 FROM python:3.9.25-alpine3.21
 EXPOSE 8080
@@ -19,7 +19,7 @@ ENV CART_HOST=cart \
     AMQP_HOST=rabbitmq \
     AMQP_USER=roboshop \
     AMQP_PASS=roboshop123 
-COPY --from=build /opt/server requirements.txt
+COPY --chown=roboshop:roboshop payment.ini *.py requirements.txt .
 USER roboshop
 CMD [ "--ini", "payment.ini"]
 ENTRYPOINT ["uwsgi"]
