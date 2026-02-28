@@ -1,5 +1,6 @@
 FROM python:3.9.25-alpine3.21 AS build
 WORKDIR /opt/server
+RUN apk add uwsgi
 COPY payment.ini *.py requirements.txt  .
 RUN pip3 install -r requirements.txt
 
@@ -18,7 +19,7 @@ ENV CART_HOST=cart \
 COPY --from=build /opt/server requirements.txt
 USER roboshop
 CMD [ "--ini", "payment.ini"]
-ENTRYPOINT ["pyuwsgi"]
+ENTRYPOINT ["uwsgi"]
 
 
 # FROM python:3.9
