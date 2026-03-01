@@ -13,7 +13,6 @@ COPY static /usr/share/nginx/html/
 # Fix permissions
 RUN chown -R roboshop:roboshop /var/cache/nginx \
     && chown -R roboshop:roboshop /var/run \
-    && chown -R roboshop:roboshop /etc/nginx \
     && chown -R roboshop:roboshop /usr/share/nginx/html
 
 # Switch to non-root user
