@@ -8,6 +8,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 # Copy custom nginx config
 COPY nginx.conf /etc/nginx/nginx.conf
+COPY static /usr/share/nginx/html/
 
 # Fix permissions
 RUN chown -R roboshop:roboshop /var/cache/nginx \
