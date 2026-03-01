@@ -16,7 +16,7 @@ RUN chown -R roboshop:roboshop /var/cache/nginx \
     && chown -R roboshop:roboshop /usr/share/nginx/html
 
 # Switch to non-root user
-USER roboshop
+USER nginx
 
 EXPOSE 8080
 
